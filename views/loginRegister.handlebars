@@ -1,0 +1,45 @@
+{{! Use the main layout }}
+{{!< main }}
+
+<link rel="stylesheet" href="css/login.css">
+
+<section class="login-register">
+    {{!-- <section class = "login-register-area">
+        <h2>LOGIN</h2>
+        <!-- errors will appear here -->
+        {{#if loginError}}
+            <p style="color: red;">{{loginError}}</p>
+        {{/if}}
+        <form action="/login" method="POST">
+            <label for="username">Enter Username</label> <br>
+            <input type="text" id="username" name="username" required> 
+            <img src="images/account.svg" class="userIcon">
+            <button type="submit">Login</button>
+        </form>
+    </section>
+
+    <div class="or-container">
+        <div class="or-container">OR</div>
+    </div>
+
+    <section class = "login-register-area">
+        <h2>REGISTER</h2>
+        <!-- errors will appear here -->
+        {{#if regError}}
+            <p style="color: red;">{{regError}}</p>
+        {{/if}}
+        <form action="/register" method="POST">
+            <label for="new-username">Create Username</label> <br>
+            <input type="text" id="new-username" name="username" required>
+            <img src="images/account.svg" class="userIcon">
+            <button type="submit">Register</button>
+        </form>
+    </section> --}}
+
+    <section class = "login-register-area">
+        <div class="container">
+            <h2>Login with Google</h2>
+            <a href="/auth/google">Sign In with Google</a>
+        </div>
+    </section>
+</section>

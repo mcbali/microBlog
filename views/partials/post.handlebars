@@ -1,0 +1,106 @@
+{{! Partial for a single post }}
+<link rel="stylesheet" href="css/post.css">
+
+<div class="post">
+    <div class="post-avatar">
+        <!-- the user's avatar -->
+        <img src="/avatar/{{username}}" alt="{{username}}'s avatar">
+    </div>
+    <div class="post-content preserve-newlines">
+        <!-- the post -->
+        <h2 class="title">{{title}}</h2>
+        <p class="content">{{content}}</p>
+        <p class="post-author">Posted by: {{username}} on {{timestamp}} </p>
+        <div class="post-status-bar">
+            <!-- everything that is shown in the status bar -->
+            {{#ifCond username ./user.username}}
+                <span>♥ {{likes}} 👎 {{dislikes}}</span>
+                <button class="delete-button" data-id="{{id}}" onclick="handleDeleteClick(event)">🗑️</button>
+        
+                {{else}}
+                <button class="like-button" data-id="{{id}}" onclick="handleLikeClick(event)">♥ {{likes}}</button>
+                <button class="dislike-button" data-id="{{id}}" onclick="handleDislikeClick(event)">👎 {{dislikes}}</button>
+            {{/ifCond}}
+        </div>
+    </div>
+</div>
+
+<script>
+
+    async function handleLikeClick(event) {
+        const postId = event.target.getAttribute('data-id');
+        try {
+            const response = await fetch(`/like/${postId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const result = await response.json();
+            if (result.success) {
+                const likeButton = event.target;
+                likeButton.textContent = `♥ ${result.likes}`; 
+                if (result.existingLike) {
+                    likeButton.style.color= 'red';
+                } else {
+                    likeButton.style.color= '';
+                }
+
+                const dislikeButton = likeButton.parentNode.querySelector('.dislike-button');
+                dislikeButton.textContent = `👎 ${result.dislikes}`; 
+            } else {
+                console.error('Failed to like post');
+            }
+        } catch (error) {
+            console.error('Error liking post:', error);
+        }
+    }
+
+    async function handleDislikeClick(event) {
+        const postId = event.target.getAttribute('data-id');
+        try {
+            const response = await fetch(`/dislike/${postId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            const result = await response.json();
+            if (result.success) {
+                const dislikeButton = event.target;
+                const likeButton = dislikeButton.parentNode.querySelector('.like-button');
+                dislikeButton.textContent = `👎 ${result.dislikes}`;
+                likeButton.textContent = `♥ ${result.likes}`; // Update like count if already liked
+                likeButton.style.color = '';
+
+            } else {
+                console.error('Failed to dislike post');
+            }
+        } catch (error) {
+            console.error('Error disliking post:', error);
+        }
+    }
+
+    async function handleDeleteClick(event) {
+        const buttonElement = event.target.closest('.delete-button');
+        const postId = buttonElement.getAttribute('data-id');        
+        try {
+            const response = await fetch(`/delete/${postId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.ok) {
+                buttonElement.closest('.post').remove();
+            } else {
+                console.error('Failed to delete post');
+            }
+        } catch (error) {
+            console.error('Error deleting post:', error);
+        }
+    }    
+
+
+    </script>

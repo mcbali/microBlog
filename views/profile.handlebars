@@ -1,0 +1,41 @@
+{{! Use the main layout }}
+{{!< main }}
+
+<link rel="stylesheet" href="css/profile.css">
+
+<div class="profile-container">
+    <div class="profile-avatar">
+        <img src="{{#if user.avatar_url}}
+                                        {{user.avatar_url}}
+                                    {{else}}
+                                        /avatar/{{user.username}}
+                                    {{/if}}" 
+                                    alt="User Avatar" 
+                                    class="header-avatar">
+    </div>
+    
+    <section class="profile-info">
+        <h3 class="user-profile">User Profile</h3>
+        <p><span class="bold">Username:</span> {{user.username}}</p>
+        <p><span class="bold">Member Since:</span> {{user.memberSince}}</p>
+        <form action="/delete-account" method="post">
+            <button type="submit" class="delete-account-button">Delete Account</button>
+        </form>
+    </section>
+</div>
+
+<section class="user-posts">
+    <!-- you can call posts tweets, or truths, or whatever, these are neologisms. Choose your own new in server.js -->
+    <h2 class="your-posts">Your {{{postNeoType}}}s</h2>
+    <!-- you'll need to make this conditaionl and #each expression work -->
+      {{#if posts.length}}
+        <ul>
+            {{#each posts}}
+                {{> post this user=../user}}            
+            {{/each}}
+        </ul>
+        {{else}}
+        <!-- fix this up with some helper functions and other handlebars expressions, or add you own character -->
+        <p class="your-posts">You have not posted yet, poster.</p>
+    {{/if}}
+</section>

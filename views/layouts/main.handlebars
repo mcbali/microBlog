@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    
+    <!-- font awesome for the trashcan icon --> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">    
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/indexStyle.css">
+
+    <title>Echo</title>
+</head>
+<body>
+    <header>
+        <nav class="navBar">
+                <!-- conditional rendering based on variables - Is the user logged in?-->
+                {{#if loggedIn}}
+                    <a href = "/"><img src="images/LOGO.svg" class="logo"></a>
+                    <a href= "/" class="ECHO">ECHO</a>
+                    <a href="/" class="home-button">Home</a>
+                    <a href="/profile">Profile</a>
+                    <a href="/logout">Logout <span>{{user.username}}</span> </a>
+                    <div class="user-info">
+                        <!-- conditional rendering based on variables -->
+                        <img src="{{#if user.avatar_url}}
+                                        {{user.avatar_url}}
+                                    {{else}}
+                                        /avatar/{{user.username}}
+                                    {{/if}}" 
+                                    alt="User Avatar" 
+                                    class="header-avatar">
+                    </div>
+                {{else}}
+                    <a href = "/"><img src="images/LOGO.svg" class="logo"></a>
+                    <a href= "/">ECHO</a>
+                    <a href="/">Home</a>
+                    <a href="/login">Login/Register</a>
+                {{/if}}
+        </nav>
+    </header>
+
+    {{{body}}}
+
+    <footer>
+        <p>© {{{copyrightYear}}} {{{appName}}}. All rights reserved.</p>
+    </footer>
+</body>
+</html>
